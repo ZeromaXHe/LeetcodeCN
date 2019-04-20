@@ -21,23 +21,31 @@ class Solution {
         }
     }
     boolean singleMatch(String s,String p){
+        //System.out.println("检查单个字母"+s.charAt(0));
         if(s.charAt(0)==p.charAt(0)) return isMatch(s.substring(1),p.substring(1));
         else return false;
     }
     boolean characterStarMatch(String s,String p){
+        //System.out.println("检查字母加星号"+p.charAt(0)+"*");
         char p0=p.charAt(0);
-        for(int i=0;i<s.length();i++){
-            if(isMatch(s.substring(i+1),p.substring(2))||isMatch(s.substring(i+1),p)){
+        if("".equals(s)) return dealWithEnd(s,p);
+        if(s.charAt(0)==p0){
+            if(characterStarMatch(s.substring(1),p)||isMatch(s,p.substring(2))){
                 return true;
             }
-            else return false;
+        }
+        else{
+            if(isMatch(s,p.substring(2))){
+                return true;
+            }
         }
         return false;
+
     }
     boolean pointStarMatch(String s,String p){
-        for(int i=0;i<s.length();i++){
-            if(isMatch(s.substring(i+1),p.substring(2))||isMatch(s.substring(i+1),p)) return true;
-        }
+        if("".equals(s)) return dealWithEnd(s,p);
+        if(isMatch(s,p.substring(2))||pointStarMatch(s.substring(1),p)) return true;
+
         return false;
     }
     boolean dealWithEnd(String aS, String aP){
@@ -47,7 +55,7 @@ class Solution {
                 if(aP.length()%2==0){
                     int pos=1;
                     while(pos<aP.length()){
-                        if(aP.charAt(1)!='*') return false;
+                        if(aP.charAt(pos)!='*') return false;
                         pos+=2;
                     }
                     return true;
